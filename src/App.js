@@ -1,5 +1,5 @@
 //TODO: STEP 1 - Import the useState hook.
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "./App.css";
 import BottomRow from "./BottomRow";
 
@@ -7,11 +7,45 @@ import BottomRow from "./BottomRow";
 
 function App() {
   //TODO: STEP 2 - Establish your application's state with some useState hooks.  You'll need one for the home score and another for the away score.
+  
+  // Score tracking
   const [homeScore, setHomeScore] = useState(0);
   const [awayScore, setAwayScore] = useState(0);
 
+  // For tracking which quarter
   const [quarter, setQuarter] = useState(1);
 
+  // For the timer
+  const [secondOnes, setSecondOnes] = useState(0);
+  const [secondTens, setSecondTens] = useState(0);
+  const [minuteOnes, setMinuteOnes] = useState(0);
+  const [minuteTens, setMinuteTens] = useState(0);
+  const [active, setActive] = useState(false);
+
+  // Functions for timer buttons
+  function startTime(){
+    setActive(true);
+  }
+  function pauseTime(){
+    setActive(false);
+  }
+  function resetTime(){
+    setSecondOnes(0);
+    setSecondTens(0);
+    setMinuteOnes(0);
+    setMinuteTens(0);
+  }
+  // useEffect will run after the DOM has been loaded. setInterval inside it is used to update time values:
+  useEffect(()=>{
+    let secondsInterval = null; // why this line?
+    if (active){
+      const secondsInt = setInterval(()=>setSecondOnes(secondOnes+1), 1000);
+    } else if (!active && secondOnes !== 0){
+      clearInterval(secondsInterval)
+    }
+  })
+
+  // To increment scores:
   function clickHandle(team, amount){
     if (team === 'home'){
       setHomeScore(homeScore + amount);
@@ -31,12 +65,22 @@ function App() {
 
             <div className="home__score">{homeScore}</div>
           </div>
-          <div className="timer">00:03</div>
+
+          <div className="timer-container">
+            <div className="timer">{minuteTens}{minuteOnes}:{secondTens}{secondOnes}</div>
+            <div className="timer-buttons">
+              <button onClick={()=>{startTime()}}>Start</button>
+              <button onClick={()=>{pauseTime()}}>Pause</button>
+              <button onClick={()=>{resetTime()}}>Reset</button>
+            </div>
+          </div>
+
           <div className="away">
             <h2 className="away__name">Tigers</h2>
             <div className="away__score">{awayScore}</div>
           </div>
         </div>
+
         <div className="bottomRow">
           <div className="down">
             <h3 className="down__title">Down</h3>

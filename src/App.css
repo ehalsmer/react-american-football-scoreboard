@@ -72,7 +72,15 @@
   border: 2px solid white;
   border-radius: 6px;
 }
-
+.timer-buttons {
+  display: flex;
+  justify-content: space-around;
+  /* margin: 2px; */
+  padding: 5px;
+}
+.timer-buttons>button {
+  border-radius: 4px;
+}
 .bottomRow {
   display: flex;
   justify-content: space-around;

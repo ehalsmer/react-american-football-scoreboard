@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import App from "./App";
 
-const BottomRow = (quarter) => {
+const BottomRow = () => {
   console.log(App().props);
   return (
     <div className="bottomRow">
